@@ -48,6 +48,37 @@ exports.signup = [
     validationResult(req, res, next);
   }
 ];
+exports.update = [
+  ...commonValidation.user,
+  check('role')
+    .exists()
+    .withMessage('MISSING')
+    .not()
+    .isEmpty()
+    .withMessage('IS_EMPTY')
+    .isIn([Roles.Customer, Roles.Manager,Roles.Vendor,Roles.Worker])
+    .withMessage('ERROR.INCORRECT_ROLE'),
+  check('profile_picture')
+    .optional()
+    .custom(async value => {
+      return await isFileExistsOnAWSValidator(value);
+    }),
+  // check('otp_token')
+  //   .exists()
+  //   .withMessage('MISSING')
+  //   .not()
+  //   .isEmpty()
+  //   .withMessage('IS_EMPTY'),
+  check('phoneNumber')
+    .exists()
+    .withMessage('MISSING')
+    .not()
+    .isEmpty()
+    .withMessage('IS_EMPTY'),
+  (req, res, next) => {
+    validationResult(req, res, next);
+  }
+];
 exports.login = [
   check('email')
   .exists()

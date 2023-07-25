@@ -1,23 +1,31 @@
 
 const Status = Object.freeze({
-  Active: 'active',
-  Sent: 'sent',
+  Active: 'active',//vendor,worker 4
+  Sent: 'sent', //manager
   Received: 'received',
-  Pending: 'pending',
-  Completed: 'completed',
-  InProgress: 'in_progress',
-  Accepted: 'accepted',
-  Rejected: 'rejected',
+  Pending: 'pending',//customer
+  Completed: 'completed',//worker 7
+  Finished: 'finished',//manager 9
+  InProgress: 'in_progress',//worker 6
+  inReview: 'in_review',//manager ,2
+  Accepted: 'accepted',//worker
+  Rejected: 'rejected',//manager
   Blocked: 'blocked',
   Cancelled: 'cancelled',
-  Confirmed: 'confirmed',
+  Confirmed: 'confirmed',//manager 5
   InActive: 'inactive',
-  New: 'new',
+  New: 'new',//1
   Archived: 'archived',
-  Paid: 'paid',
-  NotPaid: 'not_paid',
-  Scheduling: 'scheduling'
+  Paid: 'paid',//manager 8
+  NotPaid: 'not_paid',//manager
+  Scheduled: 'scheduled'//manager 3
 });
+
+const Category = Object.freeze({
+  Plumbing:'plumbing',
+  Carpenting:'carpenting',
+  Flooring:'flooring',
+})
 
 const Roles = Object.freeze({
   SuperAdmin: 'super_admin',
@@ -156,5 +164,6 @@ module.exports = {
   UploadTypes,
   Ratings,
   JobTypes,
+  Category,
   ScheduleTypes,
 };

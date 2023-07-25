@@ -95,45 +95,57 @@ exports.login = async (req, res) => {
     }
 };
 
-
 exports.getUsers = async (req, res) => {
     try {
-        const userList = await User.find().select('firstName lastName email phoneNumber profilePicture role status');
+        const page = parseInt(req.query.page) || 1; // Get the page number from the query parameter, default to 1 if not provided
+        const limit = parseInt(req.query.limit) || 10; // Set the limit of items per page, default to 10 if not provided
+        const type = req.params.type
+        const options = {
+            select: '_id firstName lastName email phoneNumber profilePicture role status createdAt',
+            page, // Current page number
+            limit, // Number of items per page
+        };
+        let query = {}
+        if (type) {
+            query = { role: type }
+        }
+        const userList = await User.paginate(query, options);
+
         return res.status(200).json({
-            msg: "users fetched successfully",
-            data: userList,
-            status: 200
-
-
+            msg: "Users fetched successfully",
+            data: userList.docs,
+            pagination: {
+                currentPage: userList.page,
+                totalPages: userList.totalPages,
+                totalItems: userList.totalDocs,
+                hasNextPage: userList.hasNextPage,
+                hasPrevPage: userList.hasPrevPage,
+            },
+            status: 200,
         });
-
     } catch (error) {
-
         console.log(error);
         res.status(500).json({
-            msg: error.msg,
-            status: 500
-
-
+            msg: error.msg || "Internal Server Error",
+            status: 500,
         });
-
     }
-}
+};
 
 exports.getUser = async (req, res) => {
     try {
         const id = req.params.id
         const type = req.query.type
         let query = {
-            _id:id
+            _id: id
         }
-        if(type){
+        if (type) {
             query = {
-                role:type,
+                role: type,
                 ...query
             }
         }
-        const user = await User.findOne(query).select('firstName lastName email phoneNumber profilePicture role status');
+        const user = await User.findOne(query).select('_id firstName lastName email phoneNumber profilePicture role status');
         return res.status(200).json({
             msg: "users fetched successfully",
             data: user,
@@ -157,16 +169,15 @@ exports.getUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
     try {
-        const id = req.params.id
         const data = req.body
-        const user = await User.updateOne({ _id: id }, {
+        const user = await User.updateOne({ _id: data._id }, {
             $set: {
                 ...data,
             }
         })
         return res.status(200).json({
             msg: "users updated successfully",
-            data: user,
+            data: { _id: data._id },
             status: 200
 
 

@@ -30,6 +30,12 @@ router.post(
   userValidate.signup,
   userCtrl.signUp
 );
+router.post(
+  '/addUser',
+  trimRequest.all,
+  userValidate.signup,
+  userCtrl.signUp
+);
 /*
  * SignUp route
  */
@@ -39,12 +45,21 @@ router.post(
   userValidate.login,
   userCtrl.login
 );
-
-router.get("/",
+/*
+ * updateUser route
+ */
+router.post(
+  '/update',
+  requireAuth,
+  trimRequest.all,
+  userValidate.update,
+  userCtrl.updateUser
+);
+router.get("/getAll/:type",
   requireAuth,
   userCtrl.getUsers
 );
-router.get("/:id",
+router.get("/getOne/:id",
   requireAuth,
   userCtrl.getUser
 )
