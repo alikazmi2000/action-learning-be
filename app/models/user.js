@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema(
     }, // Email Address of the User
     isEmailVerified: { type: Boolean, default: false }, // Either Email is verified or not
     password: { type: String, required: true }, // Password of the User's Account
-    countryCode: String, // Country Code of User's Phone Number
+    // countryCode: String, // Country Code of User's Phone Number
     phoneNumber: String, // User's Phone Number
     profilePicture: String, // User's Profile Picture File Name
     role: { type: String, enum: Object.values(Roles) }, // User's Role admin etc

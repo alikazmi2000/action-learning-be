@@ -1,5 +1,6 @@
 const userCtrl = require('../controllers/users');
 const userValidate = require('../validations/users.validate');
+
 const { Roles } = require('../enums');
 const express = require('express');
 const router = express.Router();
@@ -29,58 +30,24 @@ router.post(
   userValidate.signup,
   userCtrl.signUp
 );
-
 /*
- * Verify Phone route
+ * SignUp route
  */
 router.post(
-  '/verify_phone',
+  '/login',
   trimRequest.all,
-  userValidate.verifyPhone,
-  userCtrl.verifyPhone
-);
-
-
-/*
- * Verify OTP code route
- */
-router.post(
-  '/verify_otp_code',
-  trimRequest.all,
-  userValidate.verifyOTPCode,
-  userCtrl.verifyOTPCode
-);
-
-
-/*
- * Send verification code route
- */
-router.post(
-  '/verify_email',
-  requireAuth,
-  trimRequest.all,
-  userCtrl.sendVerificationCode
-);
-
-/*
-* Verify email code route
-*/
-router.post(
-  '/verify_email_code',
-  requireAuth,
-  trimRequest.all,
-  userValidate.verifyEmailCode,
-  userCtrl.verifyEmail
-);
-
-/*
- * Login with phone route
- */
-router.post(
-  '/login_with_phone',
-  trimRequest.all,
-  userValidate.loginPhone,
+  userValidate.login,
   userCtrl.login
 );
 
+router.get("/",
+  requireAuth,
+  userCtrl.getUsers
+);
+router.get("/:id",
+  requireAuth,
+  userCtrl.getUser
+)
+
+// router.put("/:id")
 module.exports = router;

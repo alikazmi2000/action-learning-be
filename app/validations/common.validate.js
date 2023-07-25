@@ -1,13 +1,13 @@
 const { check } = require('express-validator');
 
 exports.user = [
-  check('first_name')
+  check('firstName')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY'),
-  check('last_name')
+  check('lastName')
     .exists()
     .withMessage('MISSING')
     .not()
@@ -24,7 +24,7 @@ exports.otpFields = [
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY'),
-  check('phone_number')
+  check('phoneNumber')
     .exists()
     .withMessage('MISSING')
     .not()

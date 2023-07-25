@@ -89,16 +89,15 @@ exports.OTPTokenIsValid = async req => {
  */
 exports.setSignUpRequest = req => {
     const response = {
-        countryCode: req.country_code,
-        phoneNumber: req.phone_number,
-        firstName: req.first_name,
-        lastName: req.last_name,
+        phoneNumber: req.phoneNumber,
+        firstName: req.firstName,
+        lastName: req.lastName,
         email: req.email,
         password: req.password,
         role: req.role,
         status: Status.Active,
         profilePicture: req.profile_picture ? req.profile_picture : undefined,
-        isEmailVerified: false
+        isEmailVerified: true
     };
 
     return response;

@@ -25,25 +25,54 @@ exports.signup = [
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY')
-    .isIn([Roles.Seeker, Roles.Giver])
+    .isIn([Roles.Customer, Roles.Manager,Roles.Vendor,Roles.Worker])
     .withMessage('ERROR.INCORRECT_ROLE'),
   check('profile_picture')
     .optional()
     .custom(async value => {
       return await isFileExistsOnAWSValidator(value);
     }),
-  check('otp_token')
+  // check('otp_token')
+  //   .exists()
+  //   .withMessage('MISSING')
+  //   .not()
+  //   .isEmpty()
+  //   .withMessage('IS_EMPTY'),
+  check('phoneNumber')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY'),
-  check('phone_number')
+  (req, res, next) => {
+    validationResult(req, res, next);
+  }
+];
+exports.login = [
+  check('email')
+  .exists()
+  .withMessage('MISSING')
+  .not()
+  .isEmpty()
+  .withMessage('IS_EMPTY'),
+  check('password')
     .exists()
     .withMessage('MISSING')
     .not()
     .isEmpty()
-    .withMessage('IS_EMPTY'),
+    .withMessage('IS_EMPTY')
+    .isLength({
+      min: PASSWORD_MIN_LENGTH
+    })
+    .withMessage('PASSWORD_TOO_SHORT_MIN_5'),
+  check('role')
+    .exists()
+    .withMessage('MISSING')
+    .not()
+    .isEmpty()
+    .withMessage('IS_EMPTY')
+    .isIn([Roles.Customer, Roles.Manager,Roles.Vendor,Roles.Worker])
+    .withMessage('ERROR.INCORRECT_ROLE'),
   (req, res, next) => {
     validationResult(req, res, next);
   }
@@ -52,84 +81,5 @@ exports.signup = [
 /**
  * Validates verify Phone request
  */
-exports.verifyPhone = [
-  check('phone_number')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY'),
-  (req, res, next) => {
-    validationResult(req, res, next);
-  }
-];
 
 
-/**
- * Validates verify OTP code request
- */
-exports.verifyOTPCode = [
-  check('phone_number')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY'),
-  check('code')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY'),
-  (req, res, next) => {
-    validationResult(req, res, next);
-  }
-];
-
-
-/**
- * Email verification code
- */
-exports.verifyEmailCode = [
-  check('verification_code')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY'),
-  (req, res, next) => {
-    validationResult(req, res, next);
-  }
-];
-
-/**
- * Validates login with phone request
- */
-exports.loginPhone = [
-  check('phone_number')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY'),
-  check('password')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .isLength({
-      min: 5
-    }),
-  check('role')
-    .exists()
-    .withMessage('MISSING')
-    .not()
-    .isEmpty()
-    .withMessage('IS_EMPTY')
-    .isIn(Object.values(Roles))
-    .withMessage('ERROR.INCORRECT_ROLE'),
-  (req, res, next) => {
-    validationResult(req, res, next);
-  }
-];

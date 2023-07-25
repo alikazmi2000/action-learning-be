@@ -10,6 +10,7 @@
 		"SIGNUP_SUCCESS_SEEKER": "Thank you for signing up as a seeker",
 		"SIGNUP_SUCCESS_GIVER": "Thank you for signing up as a giver ",
 		"SIGNUP_ERROR": "Unable to signing you up. Please try again.",
+		"SIGNUP_PHONE_NUMBER_EXISTS": "Unable to signing you up as your phone number is in use. Please try again.",
 		"TOKEN_REFRESHED": "Access token refreshed successfully.",
 		"VERIFICATION_CODE_SUCCESS": "Verification Code Sent.",
 		"VERIFICATION_CODE_ERROR": "Unable to send the verification code.",

@@ -18,6 +18,7 @@ fs.readdirSync(routesPath).filter(file => {
     return routeFile !== 'index' ? router.use(`/${routeFile}`, require(`./${routeFile}`)) : '';
   }
   // Prevents loading of this file
+  console.log(`/${process.env.API_BASE_ROUTE}/${routeFile}`)
   return routeFile !== 'index'
     ? router.use(`/${process.env.API_BASE_ROUTE}/${routeFile}`, require(`./${routeFile}`))
     : '';
