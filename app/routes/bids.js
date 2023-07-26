@@ -39,7 +39,19 @@ router.post(
     //   bidValidate.validateUpdateBid,
     bidController.updateBidById
 );
-
+router.post(
+    '/getUserBidById',
+    requireAuth,
+    trimRequest.all,
+    bidValidate.getUserBidById,
+    bidController.getUserBidById
+);
+router.get(
+    '/getBidsByJobId',
+    requireAuth,
+    trimRequest.all,
+    bidController.getBidsByJobId
+);
 // router.post(
 //   '/acceptBid',
 //   requireAuth,

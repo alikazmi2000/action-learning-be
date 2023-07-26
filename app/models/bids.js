@@ -34,10 +34,14 @@ const VendorBidSchema = new mongoose.Schema({
     required: true,
     min: 0,
   },
-  quotationBreakDown: {
-    type: [String],
+  equipments: {
+    type: [],
     required: true,
     default: [''],
+  },
+  descriptionOfDelivery:{
+    type:String,
+    default:''
   },
   appointmentDate: {
     type: Date,
