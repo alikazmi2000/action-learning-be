@@ -127,6 +127,35 @@ exports.scheduleJob = [
         validationResult(req, res, next);
     }
 ];
+exports.submitSurvey = [
+    check('_id')
+        .isMongoId()
+        .withMessage('INVALID_JOB_ID'),
+    check('surveyForm')
+        .exists()
+        .withMessage('MISSING_SURVEY_FORM'),
+    check('publishToVendors')
+        .exists()
+        .withMessage('MISSING_PUBLISH_TO_VENDORS'),
+    check('publishToWorkers')
+        .exists()
+        .withMessage('MISSING_PUBLISH_TO_WORKERS'),
+    (req, res, next) => {
+        validationResult(req, res, next);
+    }
+];
+
+exports.cancelJob = [
+    check('_id')
+        .isMongoId()
+        .withMessage('INVALID_JOB_ID'),
+    check('cancelReason') 
+    .exists()
+    .withMessage('MISSING_REASON'),
+    (req, res, next) => {
+        validationResult(req, res, next);
+    }
+];
 exports.deleteJob = (req, res, next) => {
     check('_id')
         .isMongoId()

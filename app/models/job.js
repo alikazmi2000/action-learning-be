@@ -24,7 +24,19 @@ const JobSchema = new mongoose.Schema(
             ref: "user",
             required: true
         },
-        
+        surveyForm: {},
+        publishToVendors: {
+            type: Boolean,
+            default: false
+        },
+        publishToWorkers: {
+            type: Boolean,
+            default: false
+        },
+        cancelReason: {
+            type: String,
+            default:''
+        },
         jobManager: {
             type: Schema.ObjectId,
             ref: "user",
@@ -32,6 +44,10 @@ const JobSchema = new mongoose.Schema(
         jobVendor: {
             type: Schema.ObjectId,
             ref: "user",
+        },
+        isDeleted:{
+            type:Boolean,
+            default:false
         },
         type: { type: String, enum: Object.values(JobTypes), require: true },
 

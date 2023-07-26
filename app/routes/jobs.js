@@ -51,6 +51,21 @@ router.post('/scheduleJob',
     trimRequest.all,
     jobsValidate.scheduleJob,
     jobController.scheduleJob);
+
+
+router.post('/submitSurvey',
+    requireAuth,
+    trimRequest.all,
+    jobsValidate.submitSurvey,
+    jobController.submitSurvey);
+
+
+
+router.post('/cancelJob',
+    requireAuth,
+    trimRequest.all,
+    jobsValidate.cancelJob,
+    jobController.cancelJob);
 router.post('/delete', requireAuth,
     trimRequest.all,
     jobsValidate.deleteJob,
