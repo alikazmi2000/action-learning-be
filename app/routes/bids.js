@@ -52,6 +52,34 @@ router.get(
     trimRequest.all,
     bidController.getBidsByJobId
 );
+router.get(
+    '/getWorkerBidsByJobId',
+    requireAuth,
+    trimRequest.all,
+    bidController.getBidsByJobId
+);
+router.get(
+    '/getVendorBidsByJobId',
+    requireAuth,
+    trimRequest.all,
+    bidController.getBidsByJobId
+);
+
+router.post(
+    '/assignWorkerBid',
+    requireAuth,
+    trimRequest.all,
+    bidValidate.assignWorkerBid,
+    bidController.assignWorkerBid
+);
+
+router.post(
+    '/assignVendorBid',
+    requireAuth,
+    trimRequest.all,
+    bidValidate.assignVendorBid,
+    bidController.assignVendorBid
+);
 // router.post(
 //   '/acceptBid',
 //   requireAuth,

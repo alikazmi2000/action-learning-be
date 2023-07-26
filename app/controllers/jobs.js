@@ -107,6 +107,27 @@ exports.getAllJobs = async (req, res) => {
         },
       },
       {
+        $lookup: {
+          from: 'users',
+          let: { assignedToId: '$assignedTo' },
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ['$_id', '$$assignedToId'] },
+              },
+            },
+            {
+              $project: {
+                _id: 1,
+                firstName: 1,
+                lastName: 1,
+              },
+            },
+          ],
+          as: 'assignedTo',
+        },
+      },
+      {
         $facet: {
           data: [
             { $skip: options.skip },
@@ -116,6 +137,7 @@ exports.getAllJobs = async (req, res) => {
                 jobRequester: { $arrayElemAt: ['$jobRequester', 0] },
                 jobManager: { $arrayElemAt: ['$jobManager', 0] },
                 jobVendor: { $arrayElemAt: ['$jobVendor', 0] },
+                assignedTo: { $arrayElemAt: ['$assignedTo', 0] },
               },
             },
           ],

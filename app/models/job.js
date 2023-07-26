@@ -16,6 +16,14 @@ const JobSchema = new mongoose.Schema(
             type: Schema.ObjectId,
             ref: "user",
         },
+        assignedWorkerBid: {
+            type: Schema.ObjectId,
+            ref: "bid",
+        },
+        assignedVendorBid: {
+            type: Schema.ObjectId,
+            ref: "bid",
+        },
         scheduleTime: {
             type: Date,
         },

@@ -24,3 +24,23 @@ exports.getUserBidById = [
     validationResult(req, res, next);
   },
 ];
+
+
+exports.assignWorkerBid = [
+  check('jobId').notEmpty().withMessage('MISSING').isMongoId().withMessage('INVALID_JOB_ID'),
+  check('workerId').notEmpty().withMessage('MISSING').isMongoId().withMessage('INVALID_WORKER_ID'),
+  check('bidId').notEmpty().withMessage('MISSING').isMongoId().withMessage('INVALID_BID_ID'),
+
+  (req, res, next) => {
+    validationResult(req, res, next);
+  },
+];
+exports.assignVendorBid = [
+  check('jobId').notEmpty().withMessage('MISSING').isMongoId().withMessage('INVALID_JOB_ID'),
+  check('vendorId').notEmpty().withMessage('MISSING').isMongoId().withMessage('INVALID_VENDOR_ID'),
+  check('bidId').notEmpty().withMessage('MISSING').isMongoId().withMessage('INVALID_BID_ID'),
+
+  (req, res, next) => {
+    validationResult(req, res, next);
+  },
+];
