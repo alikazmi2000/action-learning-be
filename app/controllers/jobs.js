@@ -161,7 +161,7 @@ exports.getAllJobs = async (req, res) => {
     ];
 
     const jobs = await Job.aggregate(aggregationPipeline);
-    const pageInfo = jobs.length > 0 ? jobs[0].pageInfo[0] : { totalDocs: 0, totalPages: 0, currentPage: 1 };
+    const pageInfo = jobs.length > 0 ? jobs && jobs[0] && jobs[0].pageInfo[0] : { totalDocs: 0, totalPages: 0, currentPage: 1 };
 
     res.status(200).json({
       message: 'Jobs fetched successfully',
