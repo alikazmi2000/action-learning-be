@@ -52,6 +52,23 @@ router.post('/scheduleJob',
     jobsValidate.scheduleJob,
     jobController.scheduleJob);
 
+router.post('/initializeJob',
+    requireAuth,
+    trimRequest.all,
+    jobsValidate.initializeJob,
+    jobController.initializeJob);
+
+router.post('/completeJob',
+    requireAuth,
+    trimRequest.all,
+    jobsValidate.completeJob,
+    jobController.completeJob);
+
+router.post('/askPayment',
+    requireAuth,
+    trimRequest.all,
+    jobsValidate.askPayment,
+    jobController.askPayment);
 
 router.post('/submitSurvey',
     requireAuth,

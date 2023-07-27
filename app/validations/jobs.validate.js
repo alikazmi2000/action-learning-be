@@ -127,6 +127,30 @@ exports.scheduleJob = [
         validationResult(req, res, next);
     }
 ];
+exports.initializeJob = [
+    check('_id')
+        .isMongoId()
+        .withMessage('INVALID_JOB_ID'),
+    (req, res, next) => {
+        validationResult(req, res, next);
+    }
+];
+exports.completeJob = [
+    check('_id')
+        .isMongoId()
+        .withMessage('INVALID_JOB_ID'),
+    (req, res, next) => {
+        validationResult(req, res, next);
+    }
+];
+exports.askPayment = [
+    check('_id')
+        .isMongoId()
+        .withMessage('INVALID_JOB_ID'),
+    (req, res, next) => {
+        validationResult(req, res, next);
+    }
+];
 exports.submitSurvey = [
     check('_id')
         .isMongoId()

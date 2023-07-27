@@ -43,7 +43,7 @@ const JobSchema = new mongoose.Schema(
         },
         cancelReason: {
             type: String,
-            default:''
+            default: ''
         },
         jobManager: {
             type: Schema.ObjectId,
@@ -53,9 +53,15 @@ const JobSchema = new mongoose.Schema(
             type: Schema.ObjectId,
             ref: "user",
         },
-        isDeleted:{
-            type:Boolean,
-            default:false
+        isDeleted: {
+            type: Boolean,
+            default: false
+        },
+        initializedAt: {
+            type: Date,
+        },
+        completedAt: {
+            type: Date,
         },
         type: { type: String, enum: Object.values(JobTypes), require: true },
 

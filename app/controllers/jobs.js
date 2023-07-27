@@ -163,7 +163,7 @@ exports.getAllJobs = async (req, res) => {
 
     let pageInfo = { totalDocs: 0, totalPages: 0, currentPage: 1 }; // Default pageInfo values
     if (jobs.length > 0 && jobs[0].pageInfo[0]) {
-        pageInfo = jobs[0].pageInfo[0];
+      pageInfo = jobs[0].pageInfo[0];
     }
     // const pageInfo = jobs.length > 0 ? jobs && jobs[0] && jobs[0].pageInfo[0] : { totalDocs: 0, totalPages: 0, currentPage: 1 };
     console.log(pageInfo)
@@ -287,6 +287,42 @@ exports.getMyJobs = async (req, res) => {
         },
       },
       {
+        $lookup: {
+          from: 'users',
+          let: { assignedToId: '$assignedTo' },
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ['$_id', '$$assignedToId'] },
+              },
+            },
+            {
+              $project: {
+                _id: 1,
+                firstName: 1,
+                lastName: 1,
+              },
+            },
+          ],
+          as: 'assignedTo',
+        },
+      },
+      {
+        $lookup: {
+          from: 'bids',
+          let: { assignedWorkerBid: '$assignedWorkerBid' },
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ['$_id', '$$assignedWorkerBid'] },
+              },
+            },
+
+          ],
+          as: 'assignedWorkerBid',
+        },
+      },
+      {
         $facet: {
           data: [
             { $skip: options.skip },
@@ -296,6 +332,8 @@ exports.getMyJobs = async (req, res) => {
                 jobRequester: { $arrayElemAt: ['$jobRequester', 0] },
                 jobManager: { $arrayElemAt: ['$jobManager', 0] },
                 jobVendor: { $arrayElemAt: ['$jobVendor', 0] },
+                assignedTo: { $arrayElemAt: ['$assignedTo', 0] },
+                assignedWorkerBid: { $arrayElemAt: ['$assignedWorkerBid', 0] },
               },
             },
           ],
@@ -310,6 +348,7 @@ exports.getMyJobs = async (req, res) => {
           ],
         },
       },
+
       {
         $project: {
           data: 1,
@@ -322,7 +361,7 @@ exports.getMyJobs = async (req, res) => {
 
     let pageInfo = { totalDocs: 0, totalPages: 0, currentPage: 1 }; // Default pageInfo values
     if (jobs.length > 0 && jobs[0].pageInfo[0]) {
-        pageInfo = jobs[0].pageInfo[0];
+      pageInfo = jobs[0].pageInfo[0];
     }
     // const pageInfo = jobs.length > 0 ? jobs && jobs[0] && jobs[0].pageInfo[0] : { totalDocs: 0, totalPages: 0, currentPage: 1 };
 
@@ -406,7 +445,44 @@ exports.scheduleJob = async (req, res) => {
     res.status(500).json({ message: 'Failed to update job' });
   }
 };
+exports.initializeJob = async (req, res) => {
+  try {
+    if (req.user.role != 'worker') {
+      res.status(500).json({ message: 'Not Authorised' });
 
+    }
+    const job = await Job.findOne({ _id: req.body._id });
+    // const job = await Job.findByIdAndUpdate(req.body._id, req.body, { new: true });
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+    await Job.findByIdAndUpdate(req.body._id, { status: 'in_progress', initializedAt: new Date() });
+
+    res.status(200).json({ message: 'Job updated successfully', data: job });
+  } catch (error) {
+    console.error('Error updating job:', error);
+    res.status(500).json({ message: 'Failed to update job' });
+  }
+};
+exports.completeJob = async (req, res) => {
+  try {
+    if (req.user.role != 'worker') {
+      res.status(500).json({ message: 'Not Authorised' });
+
+    }
+    const job = await Job.findOne({ _id: req.body._id });
+    // const job = await Job.findByIdAndUpdate(req.body._id, req.body, { new: true });
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+    await Job.findByIdAndUpdate(req.body._id, { status: 'completed', completedAt: new Date() });
+
+    res.status(200).json({ message: 'Job updated successfully', data: job });
+  } catch (error) {
+    console.error('Error updating job:', error);
+    res.status(500).json({ message: 'Failed to update job' });
+  }
+};
 exports.submitSurvey = async (req, res) => {
   try {
     if (req.user.role != 'manager') {
@@ -430,7 +506,27 @@ exports.submitSurvey = async (req, res) => {
     res.status(500).json({ message: 'Failed to update job' });
   }
 };
+exports.askPayment = async (req, res) => {
+  try {
+    if (req.user.role != 'manager') {
+      res.status(500).json({ message: 'Not Authorised' });
 
+    }
+    const job = await Job.findOne({ _id: req.body._id });
+    // const job = await Job.findByIdAndUpdate(req.body._id, req.body, { new: true });
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+    await Job.findByIdAndUpdate(req.body._id, {
+      status: 'not_paid'
+    }, { new: true });
+
+    res.status(200).json({ message: 'Job updated successfully', data: job });
+  } catch (error) {
+    console.error('Error updating job:', error);
+    res.status(500).json({ message: 'Failed to update job' });
+  }
+};
 
 exports.cancelJob = async (req, res) => {
   try {
