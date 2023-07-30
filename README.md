@@ -22,4 +22,32 @@ git clone https://github.com/alikazmi2000/action-learning-be.git
 cd your-nodejs-backend
 
 Create a .env file:
-Copy the contents of .env.example to a new file named .env and fill in the necessary environment variables for your application. These variables include configurations for MongoDB, JWT, email services, Redis, Stripe, FCM, and other settings specific to your app.
+Copy the contents of .env.example to a new file named .env and fill in the necessary environment variables for your application.
+```
+## Build the Docker image:
+
+```bash
+docker build -t action-learning-be .
+```
+
+## Run MongoDB as a Docker container:
+```bash
+docker-compose up -d mongodb
+```
+
+## Run Backend
+```bash
+docker-compose up -d backend
+```
+## To show services
+
+```bash
+docker-compose ps
+```
+
+## To Stop Application
+```bash
+docker-compose down
+
+```
+
