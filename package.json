@@ -9,7 +9,7 @@
     "test": "test"
   },
   "scripts": {
-    "start": "pm2 start server.js",
+    "start": "node server.js",
     "mocha": "nyc mocha --timeout=5000 --exit",
     "test": "npm run mocha",
     "test_log": "npm run mocha -R spec test/*.js > report_mocha 2>&1",
